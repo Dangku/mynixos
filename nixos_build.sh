@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 usage() {
-    cat <<-EOT >&2
-    Usage: $0 <board>
-    supported board: 
-    m64
-    m3
-    m2p
-    EOT
+	cat <<-EOT >&2
+	Usage: $0 <board>
+	supported board: 
+	m64
+	m3
+	m2p
+	rpi3
+	EOT
 }
 
 if [ $# -lt 1 ]; then
@@ -20,10 +21,10 @@ board=$1
 # download board specific configuration.nix
 echo "Dowloading NixOS configuration for $board"
 
-NIX_CFG="https://raw.githubusercontent.com/tuuzdu/de_aira_rpi/ed8fa0e20911fdf440dc8759c165f509729668c2/${board}_configuration.nix"
+NIX_CFG="https://raw.githubusercontent.com/Dangku/mynixos/master/${board}_configuration.nix"
 curl --insecure $NIX_CFG --output ${board}_configuration.nix -L
 
-if [ ! -f ${board}_configuration.nix ]
+if [ ! -f ${board}_configuration.nix ]; then
     echo "board configuration file not exist"
     exit 1
 fi
