@@ -23,7 +23,7 @@ Flash the base image to SD card
 ----------
 
 
-####**Board specific Installation & Configuration**
+#### **Board specific Installation & Configuration**
 
 BPI boards
 
