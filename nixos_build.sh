@@ -31,19 +31,21 @@ fi
 
 mv ${board}_configuration.nix /etc/nixos/configuration.nix
 
-# download airapkgs
-echo "Dowloading and unpacking airapkgs..."
-curl --insecure https://github.com/tuuzdu/airapkgs/archive/nixos-unstable.tar.gz --output airapkgs.tar.gz -L
-tar xvf airapkgs.tar.gz
+# download nixpkgs
+echo "Dowloading nixpkgs..."
+git clone https://github.com/NixOS/nixpkgs -b staging-next
 
 # set swap for build
 echo "Enable swap"
 fallocate -l 4G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
 
 # disable boot for raspberry
-#echo "Use fdisk to remove the bootable flag from the FAT32 partition, and set it for the ext4 partition"
-#umount /boot && fdisk /dev/mmcblk0
+if [ "$board" = "rpi3" ]; then
+    echo "Use fdisk to remove the bootable flag from the FAT32 partition, and set it for the ext4 partition"
+    umount /boot
+    echo -e 'a\n1\na\n2\nw' | fdisk /dev/mmcblk0
+fi
 
 # build
 echo "Building..."
-nixos-rebuild switch -I nixpkgs=/root/airapkgs-nixos-unstable --cores 4
+nixos-rebuild switch -I nixpkgs=/root/nixpkgs --cores 4
