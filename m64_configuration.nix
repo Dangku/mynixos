@@ -3,16 +3,6 @@
 {
   # imports = [ <nixpkgs/nixos/modules/installer/cd-dvd/sd-image-aarch64.nix> ];
   
-  # Select internationalisation properties
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
-    defaultLocale = "en_US.UTF-8";
-  };
-
-  # Select timezone
-  time.timeZone = "Europe/Moscow";
-
   boot = {
     loader = {
       # NixOS wants to enable GRUB by default
@@ -29,7 +19,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
 
     # !!! Needed for the virtual console to work on the RPi 3, as the default of 16M doesn't seem to be enough.
-    kernelParams = ["console=ttyS0,115200n8 cma=32M"];
+    kernelParams = ["console=ttyS0,115200n8 cma=256M"];
   };
 
   # Enable serial communication ttyS0
@@ -50,9 +40,19 @@
   # !!! Adding a swap file is optional, but strongly recommended!
   swapDevices = [ { device = "/swapfile"; size = 2048; } ];
 
+  # Select internationalisation properties
+  i18n = {
+    consoleFont = "Lat2-Terminus16";
+    consoleKeyMap = "us";
+    defaultLocale = "en_US.UTF-8";
+  };
+
+  # Select timezone
+  time.timeZone = "Asia/Shanghai";
+
   # Preinstall packages
   environment.systemPackages = with pkgs; [
-    wget vim htop screen git usbutils python3 gcc gnumake tmux usb-modeswitch
+    wget vim git python3 gcc gnumake 
   ];
 
   services = {
@@ -64,7 +64,7 @@
     # Xserver
     xserver = {
       enable = true;
-      #videoDrivers = [ "fbturbo" ];
+      videoDrivers = [ "fbturbo" ];
 
       # Enable touchpad support.
       libinput.enable = true;
