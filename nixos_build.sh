@@ -5,7 +5,6 @@ usage() {
 	Usage: $0 <board>
 	supported board: 
 	m64
-	m3
 	m2p
 	rpi3
 	EOT
@@ -32,8 +31,8 @@ fi
 mv ${board}_configuration.nix /etc/nixos/configuration.nix
 
 # download nixpkgs
-echo "Dowloading nixpkgs..."
-git clone https://github.com/NixOS/nixpkgs -b staging-next
+#echo "Dowloading nixpkgs..."
+#git clone https://github.com/NixOS/nixpkgs -b staging-next
 
 # set swap for build
 echo "Enable swap"
@@ -48,4 +47,4 @@ fi
 
 # build
 echo "Building..."
-nixos-rebuild switch -I nixpkgs=/root/nixpkgs --cores 4
+nixos-rebuild switch 
